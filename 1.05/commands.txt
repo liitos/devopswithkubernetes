@@ -1,0 +1,3 @@
+$ kubectl port-forward project-dep-5b6d88f467-tskvv 5000:5000
+$ curl http://localhost:5000
+Hello kubeworld

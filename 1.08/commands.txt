@@ -1,0 +1,6 @@
+$ kubectl apply -f manifests/deployment.yaml
+$ kubectl apply -f manifests/service.yaml
+$ kubectl apply -f manifests/ingress.yaml
+$ curl http://localhost:8081
+
+Hello kubeworld

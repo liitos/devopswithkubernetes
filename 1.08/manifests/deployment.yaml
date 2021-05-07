@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: projekti
+  template:
+    metadata:
+      labels:
+        app: projekti
+    spec:
+      containers:
+        - name: projekti
+          image: liitos/projekti

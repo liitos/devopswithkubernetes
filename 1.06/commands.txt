@@ -1,0 +1,5 @@
+$ docker build --tag liitos/projekti .
+$ kubectl apply -f manifests/deployment.yaml
+$ kubectl apply -f manifests/service.yaml
+$ curl http://localhost:5000
+Hello kubeworld
