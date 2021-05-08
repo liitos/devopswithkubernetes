@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hashgenerator2-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hashgenerator2-svc
+          servicePort: 2345
+      - path: /pingpong
+        backend:
+          serviceName: pingpong-svc
+          servicePort: 2345
