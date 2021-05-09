@@ -1,0 +1,8 @@
+$ docker build --tag liitos/hashreader reader/
+$ docker build --tag liitos/hashwriter writer/
+$ docker push liitos/hashreader
+$ docker push liitos/hashwriter
+$ kubectl apply -f manifests/deployment.yaml
+$ kubectl apply -f manifests/service.yaml
+$ kubectl apply -f manifests/ingress.yaml
+$ curl http:/localhost:8081

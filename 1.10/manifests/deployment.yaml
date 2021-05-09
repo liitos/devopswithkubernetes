@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rwapp-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rwapp
+  template:
+    metadata:
+      labels:
+        app: rwapp
+    spec:
+      volumes: # Define volume
+        - name: shared-hash
+          emptyDir: {}
+      containers:
+        - name: hash-writer
+          image: liitos/hashwriter
+          volumeMounts: # Mount volume
+          - name: shared-hash
+            mountPath: /usr/app
+        - name: hash-reader
+          image: liitos/hashreader
+          volumeMounts: # Mount volume
+          - name: shared-hash
+            mountPath: /usr/app
