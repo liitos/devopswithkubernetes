@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projekti-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: projekti
+  template:
+    metadata:
+      labels:
+        app: projekti
+    spec:
+      volumes: # Define volume
+        - name: shared-projekti
+          persistentVolumeClaim:
+            claimName: projekti-claim
+      containers:
+        - name: projekti
+          image: liitos/projekti:1.13
+          volumeMounts: # Mount volume
+          - name: shared-projekti
+            mountPath: /app/static

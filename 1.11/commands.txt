@@ -1,0 +1,12 @@
+docker exec k3d-k3s-default-agent-0 mkdir -p /tmp/kube
+docker build --tag liitos/main:1.11 ./main
+docker build --tag liitos/pingpong:1.11 ./pingpong
+kubectl apply -f manifests/persistenvolume.yaml
+kubectl apply -f manifests/persistenvolumeclaim.yaml
+docker push liitos/main:1.11
+docker push liitos/pingpong:1.11
+kubectl apply -f pingpong/manifests/deployment.yaml
+kubectl apply -f pingpong/manifests/service.yaml
+kubectl apply -f main/manifests/deployment.yaml
+kubectl apply -f main/manifests/service.yaml
+kubectl apply -f pingpong/manifests/ingress.yaml
