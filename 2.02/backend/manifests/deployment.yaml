@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projekti-be-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: projekti-be
+  template:
+    metadata:
+      labels:
+        app: projekti-be
+    spec:
+      containers:
+        - name: projekti-be
+          image: liitos/projekti-be:2.02
+          env:
+          - name: SERVICE_URL
+            value: "http://localhost:8081"

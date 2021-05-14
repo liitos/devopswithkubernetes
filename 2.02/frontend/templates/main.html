@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title></title>
+ <meta charset="utf-8" />
+</head>
+<body> 
+	<img src="{{ url_for('static', filename=d1) }}" />>
+
+	<form action="{{ todo_url }}" method="post">
+	<input type="text" name="todotext" maxlength="140"></input>
+	<input type="submit" value="Create TODO"></input>
+</form>
+
+<br/>
+ <ul>
+  {% for todo in todos %}
+    <li>{{todo}}</h1>
+  {% endfor %}
+</ul>
+
+</body>
+</html>

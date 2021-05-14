@@ -6,5 +6,3 @@ kubectl apply -f manifests/persistenvolumeclaim.yaml
 kubectl apply -f manifests/deployment.yaml
 kubectl apply -f manifests/service.yaml
 kubectl apply -f manifests/ingress.yaml
-
-can't get the img displayed, because the sub path /static isn't visible. Need to fix it somehow, but I guess i'll soon find out how
