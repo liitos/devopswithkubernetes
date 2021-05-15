@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projekti-fe-dep
+  namespace: projekti
+  labels:
+    name: projekti
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: projekti-fe
+  template:
+    metadata:
+      labels:
+        app: projekti-fe
+    spec:
+      volumes: # Define volume
+        - name: shared-projekti
+          persistentVolumeClaim:
+            claimName: projekti-claim
+      containers:
+        - name: projekti-fe
+          image: liitos/projekti-fe:2.02
+          volumeMounts: # Mount volume
+          - name: shared-projekti
+            mountPath: /app/static
+          env:
+          - name: SERVICE_URL
+            value: "localhost:8081"

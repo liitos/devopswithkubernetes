@@ -1,0 +1,18 @@
+docker build --tag liitos/main:2.01 ./main
+docker build --tag liitos/pingpong:2.01 ./pingpong
+docker push liitos/main:2.01
+docker push liitos/pingpong:2.01
+
+## ex. 2.03
+kubectl apply -f main/manifests/namespace.yaml
+kubectl config set-context --current --namespace=mainapp
+kubectl apply -f pingpong/manifests/deployment.yaml
+kubectl get pods -n mainapp
+## / ex. 2.03
+
+
+kubectl apply -f pingpong/manifests/service.yaml
+kubectl apply -f main/manifests/deployment.yaml
+kubectl apply -f main/manifests/service.yaml
+kubectl apply -f pingpong/manifests/ingress.yaml
+curl http://localhost:8081
