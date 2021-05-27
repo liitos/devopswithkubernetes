@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: projekti-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: projekti-fe-svc
+          servicePort: 2345
+  - http:
+      paths:
+      - path: /todos
+        backend:
+          serviceName: projekti-be-svc
+          servicePort: 80 

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: projekti-be-dep
+  namespace: projekti
+  labels:
+    name: projekti
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: projekti-be
+  template:
+    metadata:
+      labels:
+        app: projekti-be
+    spec:
+      containers:
+        - name: projekti-be
+          image: liitos/projekti-be:2.10
+          env:
+          - name: SERVICE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: projekti-config
+                key: SERVICE_URL
+          - name: PWD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-pwd
+                key: PWD # ENV name in the secret
+          - name: DBNAME
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: DBNAME
+          - name: USER
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: USER
+          - name: HOST
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: HOST
