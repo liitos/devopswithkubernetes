@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pingpong-dep
+  namespace: mainapp
+  labels:
+    name: mainapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pingpong
+  template:
+    metadata:
+      labels:
+        app: pingpong
+    spec:
+      containers:
+        - name: pingpong
+          image: liitos/pingpong:2.07
+          env:
+             - name: PWD
+               valueFrom:
+                 secretKeyRef:
+                   name: postgres-pwd
+                   key: PWD # ENV name in the secret
+             - name: DBNAME
+               valueFrom:
+                 configMapKeyRef:
+                   name: postgres-config
+                   key: DBNAME
+             - name: USER
+               valueFrom:
+                 configMapKeyRef:
+                   name: postgres-config
+                   key: USER
+             - name: HOST
+               valueFrom:
+                 configMapKeyRef:
+                   name: postgres-config
+                   key: HOST

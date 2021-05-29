@@ -1,0 +1,68 @@
+#apiVersion: v1 # Includes the Service for lazyness
+#kind: Service
+#metadata:
+#  name: postgres-svc
+#  namespace: mainapp
+#  labels:
+#    app: postgres
+#spec:
+#  ports:
+#  - port: 5432
+#    name: web
+#  clusterIP: None
+#  selector:
+#    app: postgresapp
+#
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-ss
+  namespace: mainapp
+spec:
+  serviceName: postgres-svc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:13.0
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pwd
+                  key: PWD # ENV name in the secret
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: DBNAME
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: USER
+          ports:
+            - name: db
+              containerPort: 5432
+          volumeMounts:
+            - name: pg-data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+  volumeClaimTemplates:
+    - metadata:
+        name: pg-data  # ss fails if this is only 'data' ???
+        namespace: mainapp
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 100Mi

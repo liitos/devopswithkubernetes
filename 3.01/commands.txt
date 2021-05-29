@@ -1,0 +1,24 @@
+docker build --tag liitos/main:2.06 ./main
+docker build --tag liitos/pingpong:2.07 ./pingpong
+docker push liitos/main:2.06
+docker push liitos/pingpong:2.07
+
+# secrets and configs
+kubectl apply -f main/manifests/namespace.yaml
+kubectl config set-context --current --namespace=mainapp
+kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.12.1/controller.yaml
+kubeseal -o yaml < database/manifests/secret.yaml > database/manifests/sealedsecret.yaml
+kubectl apply -f database/manifests/sealedsecret.yaml
+kubectl apply -f database/manifests/configmap.yaml
+
+# postgres
+kubectl apply -f database/manifests/statefulset.yaml
+kubectl apply -f database/manifests/service.yaml
+
+# mainapp and pingpong
+kubectl apply -f main/manifests/configmap.yaml
+kubectl apply -f pingpong/manifests/deployment.yaml
+kubectl apply -f pingpong/manifests/service.yaml
+kubectl apply -f main/manifests/deployment.yaml
+kubectl apply -f main/manifests/service.yaml
+curl http://lb.ip.addr
